@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DZIK &bull; DZAK</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        html{scroll-behavior:smooth;}
+        body{background:#0a0a0f;color:#e0e0e0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;overflow-x:hidden;}
+        #canvas-container{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;}
+        .content,.section{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;}
+        .logo{width:200px;height:200px;margin-bottom:1.5rem;filter:drop-shadow(0 0 40px rgba(255,215,0,0.3));}
+        h1{font-size:5rem;font-weight:800;letter-spacing:.15em;background:linear-gradient(135deg,#ffd700,#ffaa00,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.3rem;}
+        .ampersand{font-size:2rem;color:#888;letter-spacing:.3em;font-weight:300;margin-bottom:2rem;}
+        p.tagline{color:#aaa;letter-spacing:.3em;font-weight:300;font-size:1.1rem;margin-bottom:1.5rem;}
+        p.description{max-width:600px;line-height:1.9;color:#999;font-size:1.05rem;margin-bottom:2rem;}
+        .social{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;}
+        .social a{color:#777;text-decoration:none;font-size:.9rem;letter-spacing:.05em;transition:color .3s,padding .3s;border-bottom:1px solid transparent;padding-bottom:2px;}
+        .social a:hover{color:#ffd700;}
+        .nav{position:fixed;top:0;left:0;width:100%;z-index:10;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(10,10,15,0.8);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,215,0,0.1);}
+        .nav-logo{color:#ffd700;font-weight:800;font-size:1.2rem;letter-spacing:.1em;}
+        .nav-links{display:flex;gap:2rem;}
+        .nav-links a{color:#888;text-decoration:none;font-size:.85rem;letter-spacing:.1em;transition:color .3s;}
+        .nav-links a:hover{color:#ffd700;}
+        .scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);color:#444;font-size:.8rem;letter-spacing:.15em;animation:bounce 2s infinite;}
+        @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+        .section{min-height:100vh;padding:6rem 2rem;}
+        .section h2{font-size:3rem;color:#ffd700;margin-bottom:1.5rem;font-weight:700;}
+        .section p{max-width:700px;line-height:1.9;color:#999;font-size:1.1rem;}
+        .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem;max-width:900px;width:100%;margin-top:2rem;}
+        .skill-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,215,0,0.1);border-radius:12px;padding:2rem;transition:transform .3s,border-color .3s;}
+        .skill-card:hover{transform:translateY(-5px);border-color:rgba(255,215,0,0.3);}
+        .skill-card h3{color:#ffd700;margin-bottom:.5rem;font-size:1.2rem;}
+        .skill-card p{color:#888;font-size:.95rem;line-height:1.7;max-width:none;}
+        .contact-email{font-size:1.5rem;color:#ffd700;margin-top:1rem;display:inline-block;text-decoration:none;}
+        .contact-email:hover{text-decoration:underline;}
+        footer{text-align:center;padding:2rem;color:#444;font-size:.8rem;letter-spacing:.1em;}
+        @media(max-width:600px){h1{font-size:3rem;}.logo{width:150px;height:150px;}.nav-links{gap:1rem;}.nav-links a{font-size:.75rem;}}
+    </style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<nav class="nav">
+    <span class="nav-logo">DZIK ✦ DZAK</span>
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+    </div>
+</nav>
+
+<section class="content" id="home">
+    <div class="logo">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffd700"/>
+                    <stop offset="50%" stop-color="#ffaa00"/>
+                    <stop offset="100%" stop-color="#ff8c00"/>
+                </linearGradient>
+                <filter id="glow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <text x="100" y="70" text-anchor="middle" font-size="48" font-weight="900" fill="url(#gold)" filter="url(#glow)" style="font-family:Arial Black,sans-serif;">DZIK</text>
+            <text x="100" y="110" text-anchor="middle" font-size="24" font-weight="300" fill="#666" style="font-family:Georgia,serif;">&amp;</text>
+            <text x="100" y="150" text-anchor="middle" font-size="48" font-weight="900" fill="url(#gold)" filter="url(#glow)" style="font-family:Arial Black,sans-serif;">DZAK</text>
+        </svg>
+    </div>
+    <h1>DZIK &amp; DZAK</h1>
+    <p class="tagline">✦ VISION IN MOTION ✦</p>
+    <p class="description">
+        Where bold ideas meet fearless execution.<br/>
+        We craft digital experiences that leave a mark.
+    </p>
+    <div class="social">
+        <a href="#">Instagram</a>
+        <a href="#">GitHub</a>
+        <a href="#">LinkedIn</a>
+    </div>
+    <div class="scroll-hint">SCROLL DOWN ↓</div>
+</section>
+
+<section class="section" id="about">
+    <h2>About Us</h2>
+    <p>
+        DZIK &amp; DZAK is a creative partnership built on passion, precision, and the relentless pursuit of the extraordinary. From concept to launch, we bring your vision to life with cutting-edge design and technology.
+    </p>
+    <div class="skills-grid">
+        <div class="skill-card">
+            <h3>🎨 Design</h3>
+            <p>Bold, modern interfaces that captivate users and communicate your brand story.</p>
+        </div>
+        <div class="skill-card">
+            <h3>💻 Development</h3>
+            <p>Clean, performant code using the latest technologies for flawless delivery.</p>
+        </div>
+        <div class="skill-card">
+            <h3>🚀 Strategy</h3>
+            <p>Data-driven decisions and growth strategies to maximize your digital impact.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="contact">
+    <h2>Let's Talk</h2>
+    <p>Ready to create something unforgettable?<br/>Reach out and let's make it happen.</p>
+    <a href="mailto:hello@dzikdzak.com" class="contact-email">hello@dzikdzak.com</a>
+    <div class="social" style="margin-top:2rem;">
+        <a href="#">Instagram</a>
+        <a href="#">GitHub</a>
+        <a href="#">LinkedIn</a>
+    </div>
+</section>
+
+<footer>© 2026 DZIK &amp; DZAK. All rights reserved.</footer>
+
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js"}}</script>
+<script type="module">
+import*as THREE from'three';
+const container=document.getElementById('canvas-container');
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,0.1,1000);
+camera.position.z=25;
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+renderer.setSize(innerWidth,innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+container.appendChild(renderer.domElement);
+
+const count=2000;
+const pos=new Float32Array(count*3);
+const col=new Float32Array(count*3);
+for(let i=0;i<count;i++){
+pos[i*3]=(Math.random()-.5)*100;
+pos[i*3+1]=(Math.random()-.5)*100;
+pos[i*3+2]=(Math.random()-.5)*100;
+col[i*3]=1;col[i*3+1]=0.85;col[i*3+2]=0.3;
+}
+const geo=new THREE.BufferGeometry();
+geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+geo.setAttribute('color',new THREE.BufferAttribute(col,3));
+const mat=new THREE.PointsMaterial({size:0.15,transparent:true,opacity:0.8,vertexColors:true,blending:THREE.AdditiveBlending});
+const particles=new THREE.Points(geo,mat);
+scene.add(particles);
+
+const rings=[];
+const ringMat=new THREE.MeshBasicMaterial({color:0xffaa00,transparent:true,opacity:0.15,wireframe:true});
+for(let i=0;i<5;i++){
+const r=new THREE.Mesh(new THREE.TorusGeometry(3+i*2,0.05,16,80),ringMat);
+r.position.set((Math.random()-.5)*15,(Math.random()-.5)*15,(Math.random()-.5)*10-5);
+r.rotation.set(Math.random()*Math.PI,Math.random()*Math.PI,0);
+scene.add(r);
+rings.push({mesh:r,speed:0.003*(i+1)});
+}
+
+let mx=0,my=0;
+document.addEventListener('mousemove',(e)=>{mx=(e.clientX/innerWidth)*2-1;my=-(e.clientY/innerHeight)*2+1;});
+
+function animate(){
+requestAnimationFrame(animate);
+particles.rotation.y+=0.0005;
+particles.rotation.x+=0.0002;
+rings.forEach(r=>{r.mesh.rotation.x+=r.speed;r.mesh.rotation.y+=r.speed*1.5;});
+camera.position.x+=(mx*3-camera.position.x)*0.02;
+camera.position.y+=(my*2-camera.position.y)*0.02;
+camera.lookAt(0,0,0);
+renderer.render(scene,camera);
+}
+animate();
+
+addEventListener('resize',()=>{
+camera.aspect=innerWidth/innerHeight;
+camera.updateProjectionMatrix();
+renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+</body>
+</html>
