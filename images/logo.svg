@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5c542"/>
+      <stop offset="100%" stop-color="#e8a317"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="200" height="200" rx="30" fill="#0a0a0a"/>
+  <text x="100" y="75" text-anchor="middle" font-size="42" font-weight="900" fill="url(#gold)" font-family="Segoe UI, sans-serif" filter="url(#glow)">DZIK</text>
+  <text x="100" y="105" text-anchor="middle" font-size="20" font-weight="300" fill="#666" font-family="Segoe UI, sans-serif">_</text>
+  <text x="100" y="140" text-anchor="middle" font-size="42" font-weight="900" fill="url(#gold)" font-family="Segoe UI, sans-serif" filter="url(#glow)">DZAK</text>
+  <text x="100" y="170" text-anchor="middle" font-size="12" font-weight="400" fill="#a09080" font-family="Segoe UI, sans-serif" letter-spacing="4">RICE</text>
+</svg>
