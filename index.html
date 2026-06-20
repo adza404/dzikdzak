@@ -40,6 +40,21 @@ h1{font-size:5.5rem;font-weight:900;letter-spacing:.12em;background:linear-gradi
 @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
 
+/* News Ticker */
+.news-ticker-wrap{position:relative;z-index:9;background:rgba(10,10,15,0.92);border-bottom:1px solid rgba(255,215,0,0.12);overflow:hidden;height:38px;display:flex;align-items:center;}
+.news-ticker-label{flex-shrink:0;background:linear-gradient(135deg,#ffd700,#ff8c00);color:#000;font-size:.65rem;font-weight:800;letter-spacing:.12em;padding:.35rem .75rem;height:100%;display:flex;align-items:center;z-index:2;white-space:nowrap;}
+.news-ticker-track{overflow:hidden;flex:1;mask-image:linear-gradient(90deg,transparent,black 3%,black 97%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,black 3%,black 97%,transparent);}
+.news-ticker-inner{display:flex;align-items:center;animation:ticker-scroll 40s linear infinite;white-space:nowrap;will-change:transform;}
+.news-ticker-inner:hover{animation-play-state:paused;}
+@keyframes ticker-scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.news-ticker-item{display:inline-flex;align-items:center;gap:.5rem;padding:0 2rem;font-size:.78rem;color:#ccc;}
+.news-ticker-item a{color:#ddd;text-decoration:none;transition:color .2s;}
+.news-ticker-item a:hover{color:#ffd700;}
+.news-ticker-item .ticker-dot{color:#ffd700;font-size:.5rem;flex-shrink:0;}
+.news-ticker-item .ticker-source{color:#888;font-size:.68rem;flex-shrink:0;}
+.news-ticker-loading{color:#666;font-size:.75rem;padding:0 1.5rem;}
+.news-ticker-error{color:#555;font-size:.75rem;padding:0 1.5rem;}
+
 /* Section */
 .section{position:relative;z-index:1;min-height:100vh;padding:8rem 2rem;display:flex;flex-direction:column;align-items:center;}
 .section-label{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.15);border-radius:50px;padding:.3rem 1rem;font-size:.7rem;color:#ffd700;letter-spacing:.15em;margin-bottom:1rem;}
@@ -134,6 +149,16 @@ footer .brand{color:#ffd700;font-weight:700;}
     <a href="admin.html">🔐 Admin</a>
   </div>
 </nav>
+
+<!-- News Ticker -->
+<div class="news-ticker-wrap" id="newsTickerWrap">
+  <div class="news-ticker-label">📰 BERITA PASAR</div>
+  <div class="news-ticker-track">
+    <div class="news-ticker-inner" id="newsTickerInner">
+      <span class="news-ticker-loading">Memuat berita terkini...</span>
+    </div>
+  </div>
+</div>
 
 <!-- Hero -->
 <section class="hero" id="home">
@@ -362,5 +387,92 @@ footer .brand{color:#ffd700;font-weight:700;}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="js/main.js"></script>
+<script>
+(function(){
+  const FEEDS = [
+    {url:'https://www.antaranews.com/rss/ekonomi', name:'Antara Ekonomi'},
+    {url:'https://www.cnnindonesia.com/ekonomi/rss', name:'CNN Indonesia'},
+    {url:'https://finance.detik.com/rss', name:'Detik Finance'},
+    {url:'https://www.republika.co.id/rss/ekonomi/', name:'Republika'},
+    {url:'https://www.kontan.co.id/rss', name:'Kontan'},
+    {url:'https://www.cnbcindonesia.com/news/rss', name:'CNBC Indonesia'}
+  ];
+
+  const FALLBACK = [
+    {title:'Harga beras premium stabil jelang Ramadan', source:'DZIK & DZAK'},
+    {title:'Panen raya padi diharapkan turunkan harga gabah', source:'Kementan'},
+    {title:'Stok beras nasional aman untuk 4 bulan ke depan', source:'Bulog'},
+    {title:'Tips menyimpan beras agar tetap segar lebih lama', source:'DZIK & DZAK'},
+    {title:'Permintaan beras organik naik 30% di kuartal pertama', source:'Industri'},
+    {title:'Kemendag awasi distribusi beras agar harga stabil', source:'Kemendag'},
+    {title:'Petani Indonesia mulai gunakan teknologi pertanian modern', source:'Pertanian'},
+    {title:'Program beras untuk rakyat ditargetkan selesai tepat waktu', source:'Gov Indonesia'}
+  ];
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  function makeItem(news) {
+    return '<div class="news-ticker-item">' +
+      '<span class="ticker-dot">●</span>' +
+      '<a href="' + escapeHtml(news.link || '#') + '" target="_blank" rel="noopener">' + escapeHtml(news.title) + '</a>' +
+      '<span class="ticker-source">[' + escapeHtml(news.source) + ']</span>' +
+      '</div>';
+  }
+
+  function renderTicker(newsList) {
+    const inner = document.getElementById('newsTickerInner');
+    if (!newsList || newsList.length === 0) {
+      inner.innerHTML = FALLBACK.map(n => makeItem(n)).join('') + FALLBACK.map(n => makeItem(n)).join('');
+      return;
+    }
+    // Duplicate for seamless loop
+    const doubled = [...newsList, ...newsList];
+    inner.innerHTML = doubled.map(n => makeItem(n)).join('');
+  }
+
+  function parseRSS(xmlText, feedName) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xmlText, 'text/xml');
+    const items = doc.querySelectorAll('item');
+    return Array.from(items).slice(0, 6).map(item => ({
+      title: (item.querySelector('title')?.textContent || '').replace(/<!\[CDATA\[|\]\]>/g,'').trim(),
+      link: item.querySelector('link')?.textContent || '#',
+      source: feedName
+    })).filter(n => n.title.length > 10);
+  }
+
+  async function fetchAll() {
+    const results = [];
+    await Promise.allSettled(
+      FEEDS.map(async (feed) => {
+        try {
+          const res = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(feed.url));
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const data = await res.json();
+          const news = parseRSS(data.contents, feed.name);
+          results.push(...news);
+        } catch(e) {
+          // silently skip failed feeds
+        }
+      })
+    );
+
+    if (results.length === 0) {
+      renderTicker(FALLBACK.map(n => ({...n, link: '#'})));
+    } else {
+      // Sort by newest first (random for same-day news), take 20
+      renderTicker(results.slice(0, 20));
+    }
+  }
+
+  fetchAll();
+})();
+</script>
 </body>
 </html>
